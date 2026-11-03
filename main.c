@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 
+// STRUCTS
 typedef struct hashObj{
     char *string;
     int count;
@@ -15,6 +16,7 @@ typedef struct hashtable{
     int size;
 } HashTable;
 
+// Inits hash table with malloc
 HashTable *initHash(int C1, int C2, int S){
     HashTable *hashTable = malloc(sizeof(HashTable));
     hashTable->table = malloc(sizeof(HashObj) * S);
@@ -29,6 +31,7 @@ HashTable *initHash(int C1, int C2, int S){
     return hashTable;
 }
 
+// Free hash table variable and content
 void freeHash(HashTable *hashTable){
     for(int i = 0; i < hashTable->size; i++){
         if(hashTable->table[i].string != NULL) free(hashTable->table[i].string);
@@ -38,6 +41,7 @@ void freeHash(HashTable *hashTable){
     free(hashTable);
 }
 
+// Hash function
 int hash(char *string, int S){
     int v = 0;
     int len = strlen(string);
@@ -48,11 +52,13 @@ int hash(char *string, int S){
     return v;
 }
 
+// Search function
 int searchHash(HashTable *hashTable, char *string){
     int h = hash(string, hashTable->size);
     int v = h;
     int i = 1;
 
+    // If different or "=", keep trying to find. If NULL, stop.
     while(hashTable->table[v].string != NULL && strcmp(hashTable->table[v].string, string)){
         if(i == hashTable->size) return -1; // Avoids loop
 
@@ -65,18 +71,21 @@ int searchHash(HashTable *hashTable, char *string){
     return v;
 }
 
+// Insert function
 int insertHash(HashTable *hashTable, char *string){
     int h = hash(string, hashTable->size);
     int v = h;
     int i = 1;
     char del_marker[] = "=";
 
-    int found = searchHash(hashTable, string);
-    if(found != -1){
-        hashTable->table[found].count++;
-        return found;
-    }
+    // If already exists, add counter
+    // int found = searchHash(hashTable, string);
+    // if(found != -1){
+    //     hashTable->table[found].count++;
+    //     return found;
+    // }
 
+    // Try to find NULL or "=" (del marker)
     while(hashTable->table[v].string != NULL && strcmp(hashTable->table[v].string, del_marker) && strcmp(hashTable->table[v].string, string)){
         if(i == hashTable->size) return -1; // Avoids loop
         
@@ -98,6 +107,7 @@ int insertHash(HashTable *hashTable, char *string){
     return v;
 }
 
+// Remove function
 int removeHash(HashTable *hashTable, char *string){
     int v = searchHash(hashTable, string);
     if(v == -1) return -1;
@@ -113,6 +123,8 @@ int main(){
     int S=30, C1=1, C2=0, T=1;
 
     scanf("%d %d %d", &S, &C1, &C2);
+    int c = 0;
+    while((c = getchar()) != '\n' && c != EOF); // discard the rest of the line
 
     HashTable* hashTable = initHash(C1, C2, S);
 
@@ -200,11 +212,9 @@ int main(){
             }
         }
 
-        scanf("%d", &T);
-
         int c;
+        scanf("%d", &T);
         while((c = getchar()) != '\n' && c != EOF); // discard the rest of the line
-        //printf("Opt: %d\n", T);
     }
 
     freeHash(hashTable);
