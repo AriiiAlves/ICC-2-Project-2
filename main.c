@@ -77,12 +77,12 @@ int insertHash(HashTable *hashTable, char *string){
     int i = 1;
     char del_marker[] = "=";
 
-    // If already exists, add counter
-    // int found = searchHash(hashTable, string);
-    // if(found != -1){
-    //     hashTable->table[found].count++;
-    //     return found;
-    // }
+    // If already exists, returns
+    int found = searchHash(hashTable, string);
+    if(found != -1){
+        hashTable->table[found].count++;
+        return found;
+    }
 
     // Try to find NULL or "=" (del marker)
     while(hashTable->table[v].string != NULL && strcmp(hashTable->table[v].string, del_marker) && strcmp(hashTable->table[v].string, string)){
@@ -119,7 +119,7 @@ int removeHash(HashTable *hashTable, char *string){
 }
 
 int main(){
-    int S=30, C1=1, C2=0, T=1;
+    int S=30, C1=1, C2=0, T=-1;
 
     scanf("%d %d %d", &S, &C1, &C2);
     int c = 0;
@@ -207,8 +207,9 @@ int main(){
             printf("imprimindo tabela hash\n");
             for(int i = 0; i < hashTable->size; i++){
                 if(hashTable->table[i].string == NULL || !strcmp(hashTable->table[i].string, del_marker)) continue;
-                printf("%s %d\n", hashTable->table[i].string, hashTable->table[i].count);
+                printf("%s %d\n", hashTable->table[i].string, i);
             }
+            printf("fim da tabela hash\n");
         }
 
         int c;
