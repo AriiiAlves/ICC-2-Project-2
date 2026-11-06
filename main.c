@@ -1,7 +1,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 // STRUCTS
 typedef struct hashObj{
@@ -132,10 +131,10 @@ int main(){
         if(T == 0) break;
         // Reads text
         if(T == 1){
-            char text[120001];
+            char text[120002];
             char word[31];
 
-            fgets(text, 120000, stdin);
+            fgets(text, sizeof(text), stdin);
 
             // Catches words separated by spaces
             int i = 0, j = 0;
